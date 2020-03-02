@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Books_Store</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="not_registered">not_registered</string>
+    <string name="register">Register</string>
+    <string name="confirm_password">Confirm_Password</string>
+</resources>
