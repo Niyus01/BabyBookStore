@@ -10,6 +10,10 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 
 public class DataBaseHelperBooks extends SQLiteOpenHelper {
+
+    private static DataBaseHelperBooks sInstance;
+   // private final Context myContext;
+    private static SQLiteDatabase myWritableDb;
     private static final String TAG = "DatabaseHelper";
     public static final String DataBase_Name = "Books.db";
     private static final String TABLE_NAME = "Books";
@@ -19,8 +23,37 @@ public class DataBaseHelperBooks extends SQLiteOpenHelper {
     private static final String COL4 = "count";
 
     public DataBaseHelperBooks(@Nullable Context context) {
-        super(context, DataBase_Name, null, 1);
+        super(context, DataBase_Name, null, 2);
+      //  this.myContext = context;
     }
+
+    /*public static synchronized DataBaseHelperBooks getInstance(Context context) {
+
+        // Use the application context, which will ensure that you
+        // don't accidentally leak an Activity's context.
+        // Singleton pattern
+        if (sInstance == null) {
+            sInstance = new DataBaseHelperBooks(context.getApplicationContext());
+        }
+        return sInstance;
+    }
+
+    public SQLiteDatabase getMyWritableDatabase() {
+        if ((myWritableDb == null) || (!myWritableDb.isOpen())) {
+            myWritableDb = this.getWritableDatabase();
+        }
+
+        return myWritableDb;
+    }
+
+    @Override
+    public void close() {
+        super.close();
+        if (myWritableDb != null) {
+            myWritableDb.close();
+            myWritableDb = null;
+        }
+    }*/
 
 
     @Override
@@ -52,14 +85,13 @@ public class DataBaseHelperBooks extends SQLiteOpenHelper {
 
         return result;}
         else{
+           // cursor = db.rawQuery("SELECT count FROM Books WHERE title = ?", new String[] {title} );
             cursor.moveToFirst();
-           int a = cursor.getInt(cursor.getColumnIndex("count"));
+            int a = cursor.getInt(cursor.getColumnIndex("count"));
             a++;
+            values.put(COL4, a);
 
-           values.put(COL4, a);
-
-
-           long result= db.update(TABLE_NAME, values,  COL2 + " = ?",new String[]{title});
+            long result= db.update(TABLE_NAME, values,  COL2 + " = ?",new String[]{title});
             return  result;
     }
 }
@@ -86,6 +118,16 @@ public class DataBaseHelperBooks extends SQLiteOpenHelper {
         double priceSave = cursorprice.getDouble(cursorprice.getColumnIndex("price"));
         priceSave*=a;*/
         return data;
+
+    }
+
+    public void updateCount(int count, String title){
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(COL4,count);
+
+        long result= db.update(TABLE_NAME, values,  COL2 + " = ?",new String[]{title});
+        //String query = "UPDATE " + TABLE_NAME + " SET " + COL4 + " = '" + count + "' WHERE title = ?", new String[] {title};
 
     }
 

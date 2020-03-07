@@ -10,6 +10,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+
 public class RegisterActivity extends AppCompatActivity {
 
     EditText text_username;
@@ -18,6 +20,7 @@ public class RegisterActivity extends AppCompatActivity {
     Button button_Register;
     TextView textview_Login;
     DataBaseHelperLogin db;
+    FirebaseAuth firebase;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,18 +49,33 @@ public class RegisterActivity extends AppCompatActivity {
                 String pwd = text_password.getText().toString().trim();
                 String conf_pwd = text_confpassword.getText().toString().trim();
 
-                if(pwd.equals(conf_pwd)){
-                    long val = db.addData(user,pwd);
-
-                    if(val> 0)
-                        Toast.makeText(RegisterActivity.this, "You have registered", Toast.LENGTH_SHORT).show();
-
-                    else
-                        Toast.makeText(RegisterActivity.this,pwd+"Registration error",Toast.LENGTH_SHORT).show();
+                if(user.isEmpty()){
+                    text_username.setError("Please enter email id");
 
                 }
-                else{
-                    Toast.makeText(RegisterActivity.this,"Password is not matching",Toast.LENGTH_SHORT).show();
+                else if (pwd.isEmpty()){
+                    text_password.setError("Please enter your password");
+
+                }
+                else if (user.isEmpty()&&pwd.isEmpty()){
+                    Toast.makeText(RegisterActivity.this,"Field are Empty", Toast.LENGTH_SHORT).show();
+
+                }
+
+                else if (!(user.isEmpty()&&pwd.isEmpty())) {
+
+                    if (pwd.equals(conf_pwd)) {
+                        long val = db.addData(user, pwd);
+
+                        if (val > 0)
+                            Toast.makeText(RegisterActivity.this, "You have registered", Toast.LENGTH_SHORT).show();
+
+                        else
+                            Toast.makeText(RegisterActivity.this, pwd + "Registration error", Toast.LENGTH_SHORT).show();
+
+                    } else {
+                        Toast.makeText(RegisterActivity.this, "Password is not matching", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });

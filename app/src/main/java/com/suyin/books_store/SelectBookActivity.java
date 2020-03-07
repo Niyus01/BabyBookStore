@@ -51,6 +51,7 @@ public class SelectBookActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 addData(title, price);
+                btnSave.setEnabled(false);
 
             }
 
@@ -61,6 +62,7 @@ public class SelectBookActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent listIntent = new Intent(SelectBookActivity.this, ListActivity.class);
+              //  listIntent.putExtra("db",db);
                 startActivity(listIntent);
             }
         });
@@ -68,10 +70,12 @@ public class SelectBookActivity extends AppCompatActivity {
 
         }
     public void addData(String title, double price){
+      //  db.getWritableDatabase();
         long res =  db.addData(title, price,1);
 
         if(res>0){
             Toast.makeText(this, "Data Successfully Inserted", Toast.LENGTH_SHORT).show();
+            db.close();
         }
         else{
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();

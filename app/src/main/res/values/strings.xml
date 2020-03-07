@@ -3,7 +3,14 @@
     <string name="username">Username</string>
     <string name="password">Password</string>
     <string name="login">Login</string>
+    <string name="prompt">Total of books</string>
     <string name="not_registered">not_registered</string>
     <string name="register">Register</string>
     <string name="confirm_password">Confirm_Password</string>
+    <string-array name="numbers">
+        <item>Delete</item>
+        <item>One</item>
+        <item>Two</item>
+        <item>Three</item>
+    </string-array>
 </resources>

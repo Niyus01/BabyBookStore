@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.paypal.android.sdk.payments.PayPalConfiguration;
@@ -28,16 +29,18 @@ import java.math.BigDecimal;
 
 import java.util.ArrayList;
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private static final String TAG="ListActivity";
     private DataBaseHelperBooks db;
-    private Button btnCancel, btnRemove, btnBuy, btnStore;
+    private Button  btnBuy, btnStore;
     private ListView mListView;
     private int selectID;
     private String selectName, amount;
-    private TextView totalPayment;
+    private TextView totalPayment, bookCount;
     private EditText bookSelect;
+    private Spinner spinner;
+    private String[] booksbytitle = { "0","1","2","3" };
 
     public static final String PAYPAL_CLIENT_ID = "AYS1Ahsj-cjU2JKTqfLHFCQ-OyUkf7aBge7La3gkcRK_qCZt_M_8tbb41yb7IQg0QGwNQaEUfKDAkhUe";
     private static final int PAYPAL_REQUEST_CODE = 7171;
@@ -60,30 +63,31 @@ public class ListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_list);
 
         bookSelect = findViewById(R.id.editText1);
-        btnCancel = findViewById(R.id.btnCancel);
-        btnRemove = findViewById(R.id.btnRemove);
+        spinner = findViewById(R.id.spinner);
         btnBuy = findViewById(R.id.btnBuy);
         btnStore = findViewById(R.id.btnStore);
         mListView = findViewById(R.id.listDemo);
         totalPayment =  findViewById(R.id.textPrice);
+        bookCount = findViewById(R.id.textbookcount);
 
 
         Intent intent = new Intent (this, PayPalService.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         startService(intent);
 
-        db = new DataBaseHelperBooks(this);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.numbers,android.R.layout.simple_spinner_item);
+
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener(this);
+
+        db= new DataBaseHelperBooks(this);
         enabledFalse();
         populateListView();
 
-        btnRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                db.deleteName(selectID,selectName);
-                enabledFalse();
-                populateListView();
-            }
-        });
+
+
+
 
         btnBuy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,23 +95,18 @@ public class ListActivity extends AppCompatActivity {
                 double total_payment=0;
                 Toast.makeText(ListActivity.this,"Thanks you enjoy!!",Toast.LENGTH_SHORT).show();
 
-               // db.deleteTable();
+                db.deleteTable();
 
                // btnBuy.setEnabled(false);
                // enabledFalse();
-                processPayment();
-               // populateListView();
+            //    processPayment();
+                populateListView();
 
 
             }
         });
 
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                enabledFalse();
-            }
-        });
+
 
         btnStore.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,6 +140,7 @@ public class ListActivity extends AppCompatActivity {
                     Log.d(TAG, "onItemClick: The ID is: " + itemID);
                     enabledTrue();
                     bookSelect.setText(name);
+
                 }
                 else{
                     toastMessage("No ID associated with that name");
@@ -151,6 +151,38 @@ public class ListActivity extends AppCompatActivity {
 
     }
 
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        // On selecting a spinner item
+        String item = parent.getItemAtPosition(position).toString();
+        parent.getContext();
+
+       /* int book=0;
+        switch(item){
+            case "0":
+                book=0;
+            case "1":
+                book=1;
+            case "2":
+                book=2;
+            case "3":
+                book=3;*/
+
+        if(position>0){
+            Toast.makeText(this, "book: "+position,Toast.LENGTH_LONG).show();
+        db.updateCount(position, selectName);
+        enabledFalse();}
+
+
+        }
+
+
+
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
+
+    }
 
     private void populateListView(){
         Log.d(TAG, "populateListView: Displaying data in the ListView.");
@@ -163,7 +195,7 @@ public class ListActivity extends AppCompatActivity {
         if(dataTotal.getCount()>0) {
             dataTotal.moveToFirst();
            payment = dataTotal.getDouble(dataTotal.getColumnIndex("total"));
-           amount ="1";// String.valueOf(payment);
+           amount = String.valueOf(payment);
         }
         ArrayList<String> listData = new ArrayList<>();
 
@@ -179,6 +211,7 @@ public class ListActivity extends AppCompatActivity {
         ListAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
         mListView.setAdapter(adapter);
         totalPayment.setText("Current amount: $"+ String.format("%.2f",payment));
+        db.close();
 
     }
 
@@ -197,19 +230,23 @@ public class ListActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-       // super.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PAYPAL_REQUEST_CODE) {
 
-            if (requestCode == RESULT_OK) {
+            if (resultCode == RESULT_OK) {
                 PaymentConfirmation confirmation = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
                 if (confirmation != null) {
                     try {
                         db.deleteTable();
                         populateListView();
-                        Intent intent = new Intent(this, PaymentDetailsActivity.class);
+                        //Intent intent = new Intent(this, PaymentDetailsActivity.class);
                         String paymentDetails = confirmation.toJSONObject().toString(4);
+                       // Toast.makeText(this, "Payment Detail: " +  paymentDetails+ " Payment Amount: "+String.format("%.2f",amount),Toast.LENGTH_LONG).show();
+                       // intent.putExtra("Payment Detail", paymentDetails);
+                        //intent.putExtra("Payment Amount", amount);
+                        //startActivity(intent);
                        // db.deleteTable();
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -219,7 +256,7 @@ public class ListActivity extends AppCompatActivity {
             }
         }
 
-        else if(requestCode==RESULT_CANCELED){
+        else if(resultCode==RESULT_CANCELED){
             Toast.makeText(this, "Canceled", Toast.LENGTH_SHORT).show();}
 
         else if(resultCode== PaymentActivity.RESULT_EXTRAS_INVALID){
@@ -231,14 +268,17 @@ public class ListActivity extends AppCompatActivity {
     public void enabledFalse(){
         bookSelect.setText("");
         bookSelect.setVisibility(View.INVISIBLE);
-        btnRemove.setVisibility(View.INVISIBLE);
-        btnCancel.setVisibility(View.INVISIBLE);
+        spinner.setVisibility(View.INVISIBLE);
+        bookCount.setVisibility(View.INVISIBLE);
+
+
+
     }
 
     public void enabledTrue(){
-        btnCancel.setVisibility(View.VISIBLE);
-        btnRemove.setVisibility(View.VISIBLE);
+        spinner.setVisibility(View.VISIBLE);
         bookSelect.setVisibility(View.VISIBLE);
+        bookCount.setVisibility(View.VISIBLE);
     }
 
     private void toastMessage(String message){
