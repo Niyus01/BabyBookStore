@@ -1,19 +1,11 @@
 package com.suyin.books_store;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import android.os.Bundle;
-import android.database.Cursor;
+import androidx.appcompat.widget.Toolbar;
 import android.os.Bundle;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +25,15 @@ public class SelectBookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_book);
 
+
+        Toolbar toolbar =(Toolbar)  findViewById(R.id.toolbar_main);
+        TextView toolbar_title = findViewById(R.id.toolbar_title);
+        TextView sing_up = findViewById(R.id.toolbar_text);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar_title.setText("About this book");
+
+
         btnList = findViewById(R.id.btnList);
         btnSave = findViewById(R.id.btnSave);
         textBook = findViewById(R.id.textBook);
@@ -44,13 +45,24 @@ public class SelectBookActivity extends AppCompatActivity {
         infoBook = receivedIntent.getStringExtra("info");
         price = receivedIntent.getDoubleExtra("price", price);
 
-        booktoAdd.setText("Book name: "+title);
-        textBook.setText("Information about this book: "+ infoBook);
+        booktoAdd.setText("Book: "+title);
+        textBook.setText(infoBook);
+
+
+        sing_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SelectBookActivity.this, MainActivity.class));
+            }
+        });
 
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addData(title, price);
+                btnSave.setBackground(getResources().getDrawable(R.drawable.btn_click));
+                btnSave.setTextColor(getResources().getColor(R.color.colorPrimary));
+                btnSave.setText("Added to the cart");
                 btnSave.setEnabled(false);
 
             }
@@ -68,15 +80,18 @@ public class SelectBookActivity extends AppCompatActivity {
         });
 
 
-        }
+    }
+
+
     public void addData(String title, double price){
-      //  db.getWritableDatabase();
+
         long res =  db.addData(title, price,1);
 
         if(res>0){
             Toast.makeText(this, "Data Successfully Inserted", Toast.LENGTH_SHORT).show();
             db.close();
         }
+
         else{
             Toast.makeText(this, "Something went wrong", Toast.LENGTH_SHORT).show();
         }

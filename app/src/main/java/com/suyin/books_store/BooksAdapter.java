@@ -51,8 +51,8 @@ public class BooksAdapter extends BaseAdapter {
             final TextView priceTextView = convertView.findViewById(R.id.textview_price);
 
             imageView.setImageResource(book.getImageResource());
-            titleTextView.setText("Title:"+ book.getTitle());
-            authorTextView.setText("Author:"+ book.getAuthor());
+            titleTextView.setText("Title: "+ book.getTitle());
+            authorTextView.setText("Author: "+ book.getAuthor());
             priceTextView.setText(" $ "+ price);
 
 

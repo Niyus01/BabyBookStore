@@ -1,7 +1,7 @@
 package com.suyin.books_store;
 
 import androidx.appcompat.app.AppCompatActivity;
-
+import androidx.appcompat.widget.Toolbar;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
@@ -11,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,12 +20,8 @@ import com.paypal.android.sdk.payments.PayPalPayment;
 import com.paypal.android.sdk.payments.PayPalService;
 import com.paypal.android.sdk.payments.PaymentActivity;
 import com.paypal.android.sdk.payments.PaymentConfirmation;
-
-
 import org.json.JSONException;
-
 import java.math.BigDecimal;
-
 import java.util.ArrayList;
 
 public class ListActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -35,12 +30,14 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
     private DataBaseHelperBooks db;
     private Button  btnBuy, btnStore;
     private ListView mListView;
-    private int selectID;
+    private int selectID, selectCount;
     private String selectName, amount;
-    private TextView totalPayment, bookCount;
+    private TextView totalPayment_textv, bookCount, toolbar_title, sing_up;
     private EditText bookSelect;
     private Spinner spinner;
-    private String[] booksbytitle = { "0","1","2","3" };
+    private double totalPayment;
+    private ArrayList<ListUser> listData = new ArrayList<>();
+
 
     public static final String PAYPAL_CLIENT_ID = "AYS1Ahsj-cjU2JKTqfLHFCQ-OyUkf7aBge7La3gkcRK_qCZt_M_8tbb41yb7IQg0QGwNQaEUfKDAkhUe";
     private static final int PAYPAL_REQUEST_CODE = 7171;
@@ -62,47 +59,58 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
+
+        Toolbar toolbar =findViewById(R.id.toolbar_main);
+        toolbar_title = findViewById(R.id.toolbar_title);
+        sing_up = findViewById(R.id.toolbar_text);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
+        toolbar_title.setText("Cart");
+
+
         bookSelect = findViewById(R.id.editText1);
         spinner = findViewById(R.id.spinner);
         btnBuy = findViewById(R.id.btnBuy);
         btnStore = findViewById(R.id.btnStore);
         mListView = findViewById(R.id.listDemo);
-        totalPayment =  findViewById(R.id.textPrice);
+        totalPayment_textv =  findViewById(R.id.textPrice);
         bookCount = findViewById(R.id.textbookcount);
+
+        db= new DataBaseHelperBooks(this);
 
 
         Intent intent = new Intent (this, PayPalService.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         startService(intent);
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.numbers,android.R.layout.simple_spinner_item);
-
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
+        ArrayAdapter<CharSequence> adapterSpinner = ArrayAdapter.createFromResource(this,R.array.numbers,android.R.layout.simple_spinner_item);
+        adapterSpinner.setDropDownViewResource(R.layout.linearlayout_spinner_item);
+        spinner.setAdapter(adapterSpinner);
         spinner.setOnItemSelectedListener(this);
 
-        db= new DataBaseHelperBooks(this);
-        enabledFalse();
+
         populateListView();
 
 
-
+        sing_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ListActivity.this, MainActivity.class));
+            }
+        });
 
 
         btnBuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                double total_payment=0;
-                Toast.makeText(ListActivity.this,"Thanks you enjoy!!",Toast.LENGTH_SHORT).show();
 
-                db.deleteTable();
-
-               // btnBuy.setEnabled(false);
-               // enabledFalse();
-            //    processPayment();
-                populateListView();
-
-
+                if(totalPayment==0){
+                    Toast.makeText(ListActivity.this,"Add new books to the car!!",Toast.LENGTH_SHORT).show();
+                }
+                else {
+                    enabledFalse();
+                    processPayment();
+                }
             }
         });
 
@@ -121,7 +129,11 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                String name = adapterView.getItemAtPosition(position).toString();
+               // String name = adapterView.getItemAtPosition(position).toString();
+                String name = listData.get(position).getTitle();
+                int count = listData.get(position).getCount();
+                view.setSelected(true);
+
                 Log.d(TAG, "onItemClick: You Clicked on " + name);
 
                 Cursor data = db.getItemID(name); //get the id associated with that name
@@ -132,100 +144,85 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
                     itemID = data.getInt(0);
                 }
 
-
-
                 if(itemID > -1){
                     selectID=itemID;
+                    selectCount = count;
                     selectName=name;
                     Log.d(TAG, "onItemClick: The ID is: " + itemID);
                     enabledTrue();
                     bookSelect.setText(name);
-
                 }
                 else{
                     toastMessage("No ID associated with that name");
                 }
-
             }
         });
-
     }
 
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        // On selecting a spinner item
-        String item = parent.getItemAtPosition(position).toString();
-        parent.getContext();
 
-       /* int book=0;
-        switch(item){
-            case "0":
-                book=0;
-            case "1":
-                book=1;
-            case "2":
-                book=2;
-            case "3":
-                book=3;*/
+       if(position ==1){
+           db.deleteName(selectID,selectName);
+           listData.clear();
+           enabledFalse();
+           populateListView();}
 
-        if(position>0){
-            Toast.makeText(this, "book: "+position,Toast.LENGTH_LONG).show();
-        db.updateCount(position, selectName);
-        enabledFalse();}
+        else if(position>1){
+            int count =position-1;
 
-
+            db.updateCount(count, selectName);
+            listData.clear();
+            enabledFalse();
+            populateListView();
         }
 
+    }
 
 
     public void onNothingSelected(AdapterView<?> arg0) {
         // TODO Auto-generated method stub
-
     }
+
 
     private void populateListView(){
         Log.d(TAG, "populateListView: Displaying data in the ListView.");
 
-
         Cursor data = db.getData();
-        Cursor dataTotal = db.getPrice();
+        Cursor dataTotal = db.getPayment();
 
-        double payment=0.0;
         if(dataTotal.getCount()>0) {
             dataTotal.moveToFirst();
-           payment = dataTotal.getDouble(dataTotal.getColumnIndex("total"));
-           amount = String.valueOf(payment);
+            totalPayment = dataTotal.getDouble(dataTotal.getColumnIndex("total"));
+
         }
-        ArrayList<String> listData = new ArrayList<>();
+
+        totalPayment_textv.setText("Current amount: $ "+ String.format("%.2f",totalPayment));
 
         while(data.moveToNext()){
+            //get the value from database in column then add it to the arraylist
 
-            //get the value from database in column
-            // then add it to the arraylist
-            listData.add(data.getString(1));
+            ListUser list =  new ListUser(data.getString(1),data.getInt(3), data.getDouble(4) );
+            listData.add(list);
         }
 
-      //  listData.add(totalAmount+"$");
         //create the list adapter and set the adapter
-        ListAdapter adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, listData);
+        ListUserAdapter adapter = new ListUserAdapter(this,  listData);
         mListView.setAdapter(adapter);
-        totalPayment.setText("Current amount: $"+ String.format("%.2f",payment));
         db.close();
 
     }
 
+
     private void processPayment(){
-        //amount = totalPayment.getText().toString();
-        PayPalPayment payPalPayment = new PayPalPayment (new BigDecimal(String.valueOf(amount)), "USD",
+        PayPalPayment payPalPayment = new PayPalPayment (new BigDecimal(totalPayment), "USD",
                 "Pay your balance", PayPalPayment.PAYMENT_INTENT_SALE);
 
         Intent intent = new Intent (this, PaymentActivity.class);
         intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
         intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payPalPayment);
         startActivityForResult(intent, PAYPAL_REQUEST_CODE);
-
-
 
     }
 
@@ -240,14 +237,9 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
                 if (confirmation != null) {
                     try {
                         db.deleteTable();
-                        populateListView();
-                        //Intent intent = new Intent(this, PaymentDetailsActivity.class);
+                        startActivity(new Intent(ListActivity.this, myaccountActivity.class));
                         String paymentDetails = confirmation.toJSONObject().toString(4);
-                       // Toast.makeText(this, "Payment Detail: " +  paymentDetails+ " Payment Amount: "+String.format("%.2f",amount),Toast.LENGTH_LONG).show();
-                       // intent.putExtra("Payment Detail", paymentDetails);
-                        //intent.putExtra("Payment Amount", amount);
-                        //startActivity(intent);
-                       // db.deleteTable();
+
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
@@ -271,11 +263,10 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
         spinner.setVisibility(View.INVISIBLE);
         bookCount.setVisibility(View.INVISIBLE);
 
-
-
     }
 
     public void enabledTrue(){
+        spinner.setSelection(0);
         spinner.setVisibility(View.VISIBLE);
         bookSelect.setVisibility(View.VISIBLE);
         bookCount.setVisibility(View.VISIBLE);

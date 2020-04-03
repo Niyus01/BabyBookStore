@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:gravity="center"
     android:layout_height="match_parent">
 
     <FrameLayout
@@ -13,6 +12,7 @@
             android:id="@+id/imageview_cover_art"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:paddingTop="5sp"
             android:scaleType="centerCrop"/>
 
 
@@ -22,31 +22,38 @@
         android:id="@+id/textview_book"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:paddingLeft="8dp"
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:paddingLeft="5dp"
         android:paddingTop="4dp"
-        android:paddingRight="8dp"
+        android:paddingRight="2dp"
         android:textSize="14sp"
-        android:textStyle="bold"
+
         />
 
     <TextView
         android:id="@+id/textview_book_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
-        android:textStyle="bold"
-
-        android:gravity="center_horizontal"/>
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:paddingLeft="5dp"
+        android:paddingTop="2dp"
+        android:paddingRight="2dp"
+        android:textSize="14sp"/>
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textview_price"
         android:textStyle="bold"
-        android:textSize="14sp"
-
-        android:gravity="center_horizontal"/>
+        android:textAlignment="center"
+        android:layout_gravity="center"
+        android:paddingLeft="5dp"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:paddingRight="2dp"
+        android:textSize="14sp"/>
 
 
 </LinearLayout>

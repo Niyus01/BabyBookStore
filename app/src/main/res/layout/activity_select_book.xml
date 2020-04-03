@@ -5,24 +5,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-
-    android:background="#35CE3B"
     android:gravity="center_horizontal"
     tools:context=".SelectBookActivity">
+
+
+    <include
+        layout="@layout/toolbar_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
 
     <TextView
         android:id="@+id/editable_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="50dp"
         android:fontFamily="serif"
-        android:drawSelectorOnTop="false"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:textAlignment="textStart"
-        android:layout_gravity="start"
-        android:textSize="22dp"
+        android:drawSelectorOnTop="true"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textAlignment="gravity"
+        android:gravity="fill_horizontal"
+        android:textSize="24sp"
         android:textStyle="bold" />
 
     <TextView
@@ -30,21 +34,26 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/editable_item"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="70dp"
         android:drawSelectorOnTop="false"
         android:fontFamily="serif"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-
-        android:textSize="20dp"
-        android:textStyle="bold" />
+        android:paddingLeft="15dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:textAlignment="gravity"
+        android:gravity="fill_horizontal"
+        android:paddingRight="15dp"
+        android:textSize="20sp"
+         />
 
 
     <Button
-        android:layout_width="150dp"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:text="Add to my car"
+        android:layout_marginTop="120dp"
+        android:text="Add to cart"
+        android:textColor="#ffffffff"
+        android:background="@drawable/btn_rounded"
         android:layout_gravity="center_horizontal"
         android:enabled="true"
         android:saveEnabled="true"
@@ -54,11 +63,13 @@
 
 
     <Button
-        android:layout_width="150dp"
+        android:layout_width="170dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/btn_rounded"
+        android:textColor="#ffffffff"
         android:layout_gravity="center_horizontal"
-        android:text="Check my car"
+        android:text="View cart"
         android:paddingHorizontal="20dp"
         android:id="@+id/btnList"/>
 
