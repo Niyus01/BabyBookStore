@@ -24,9 +24,9 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:layout_gravity="center"
-        android:paddingLeft="5dp"
+        android:paddingStart="5dp"
         android:paddingTop="4dp"
-        android:paddingRight="2dp"
+        android:paddingEnd="2dp"
         android:textSize="14sp"
 
         />
@@ -37,9 +37,9 @@
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:layout_gravity="center"
-        android:paddingLeft="5dp"
+        android:paddingStart="5dp"
         android:paddingTop="2dp"
-        android:paddingRight="2dp"
+        android:paddingEnd="2dp"
         android:textSize="14sp"/>
 
     <TextView
@@ -49,10 +49,10 @@
         android:textStyle="bold"
         android:textAlignment="center"
         android:layout_gravity="center"
-        android:paddingLeft="5dp"
+        android:paddingStart="5dp"
         android:paddingTop="2dp"
         android:paddingBottom="2dp"
-        android:paddingRight="2dp"
+        android:paddingEnd="2dp"
         android:textSize="14sp"/>
 
 

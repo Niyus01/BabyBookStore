@@ -2,7 +2,6 @@ package com.suyin.books_store;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -10,8 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.firebase.auth.FirebaseAuth;
 
 public class RegisterActivity extends AppCompatActivity {
 
@@ -38,7 +35,6 @@ public class RegisterActivity extends AppCompatActivity {
 
     Toolbar toolbar =findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
-    getSupportActionBar().setDisplayShowTitleEnabled(false);
     toolbar_title = findViewById(R.id.toolbar_title);
     toolbar_title.setText("Baby Book Store");
 

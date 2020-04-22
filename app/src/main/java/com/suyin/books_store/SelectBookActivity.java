@@ -25,14 +25,11 @@ public class SelectBookActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_book);
 
-
         Toolbar toolbar =(Toolbar)  findViewById(R.id.toolbar_main);
         TextView toolbar_title = findViewById(R.id.toolbar_title);
         TextView sing_up = findViewById(R.id.toolbar_text);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar_title.setText("About this book");
-
 
         btnList = findViewById(R.id.btnList);
         btnSave = findViewById(R.id.btnSave);
@@ -44,7 +41,6 @@ public class SelectBookActivity extends AppCompatActivity {
         title = receivedIntent.getStringExtra("title");
         infoBook = receivedIntent.getStringExtra("info");
         price = receivedIntent.getDoubleExtra("price", price);
-
         booktoAdd.setText("Book: "+title);
         textBook.setText(infoBook);
 
@@ -74,7 +70,6 @@ public class SelectBookActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 Intent listIntent = new Intent(SelectBookActivity.this, ListActivity.class);
-              //  listIntent.putExtra("db",db);
                 startActivity(listIntent);
             }
         });
@@ -82,9 +77,7 @@ public class SelectBookActivity extends AppCompatActivity {
 
     }
 
-
     public void addData(String title, double price){
-
         long res =  db.addData(title, price,1);
 
         if(res>0){

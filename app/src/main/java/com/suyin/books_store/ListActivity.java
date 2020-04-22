@@ -64,7 +64,6 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
         toolbar_title = findViewById(R.id.toolbar_title);
         sing_up = findViewById(R.id.toolbar_text);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
         toolbar_title.setText("Cart");
 
 
@@ -133,7 +132,6 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
                 String name = listData.get(position).getTitle();
                 int count = listData.get(position).getCount();
                 view.setSelected(true);
-
                 Log.d(TAG, "onItemClick: You Clicked on " + name);
 
                 Cursor data = db.getItemID(name); //get the id associated with that name
@@ -188,14 +186,12 @@ public class ListActivity extends AppCompatActivity implements AdapterView.OnIte
 
     private void populateListView(){
         Log.d(TAG, "populateListView: Displaying data in the ListView.");
-
         Cursor data = db.getData();
         Cursor dataTotal = db.getPayment();
 
         if(dataTotal.getCount()>0) {
             dataTotal.moveToFirst();
             totalPayment = dataTotal.getDouble(dataTotal.getColumnIndex("total"));
-
         }
 
         totalPayment_textv.setText("Current amount: $ "+ String.format("%.2f",totalPayment));

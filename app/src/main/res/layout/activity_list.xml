@@ -1,183 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center_horizontal"
     tools:context=".ListActivity">
 
-
-    <include
-        layout="@layout/toolbar_main"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-
-    <LinearLayout
-        android:id="@+id/linearLayout1"
-        android:layout_width="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal"
-        android:layout_marginTop="80dp"
-        android:layout_height="wrap_content">
+        <include
+            android:id="@+id/include"
+            layout="@layout/toolbar_main"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/allerta"
-            android:text="Click a book if you want to remove it or add another one."
-            android:textAlignment="center"
-            android:textSize="16dp"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/linearLayout2"
-        android:layout_width="wrap_content"
-        android:layout_height="178dp"
-        android:layout_below="@+id/linearLayout1"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginStart="5dp"
-        android:background="@drawable/borders"
-        android:orientation="horizontal"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
-
-
-        <ListView
-            android:id="@+id/listDemo"
+            android:id="@+id/textView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="start"
-            android:layout_marginBottom="5dp"
-            android:paddingLeft="5dp"
-            android:paddingTop="10dp"
-            android:paddingRight="5dp"
-            android:paddingBottom="5dp"
-            android:scrollbarStyle="insideOverlay"
-            android:textAlignment="viewStart" />
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="10dp"
+            android:fontFamily="@font/allerta"
+            android:text="@string/click_a_book_if_you_want_to_remove_it_or_add_another_one"
+            android:textAlignment="center"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/include"
+            app:layout_constraintTop_toBottomOf="@+id/include" />
 
 
-    </LinearLayout>
+        <LinearLayout
+            android:id="@+id/linearLayout2"
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginLeft="4dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginRight="4dp"
+            android:background="@drawable/borders"
+            android:orientation="horizontal"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            app:layout_constraintBottom_toTopOf="@+id/editText1"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/linearLayout2"
-        android:layout_marginTop="30dp"
-        android:id="@+id/linearLayout3">
+
+            <ListView
+                android:id="@+id/listDemo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:layout_marginBottom="5dp"
+                android:paddingLeft="5dp"
+                android:paddingTop="10dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp"
+                android:scrollbarStyle="insideOverlay"
+                android:textAlignment="viewStart" />
+
+
+        </LinearLayout>
+
 
         <EditText
             android:id="@+id/editText1"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="15dp"
             android:fontFamily="@font/allerta"
+            android:importantForAutofill="no"
+            android:inputType="text"
             android:textAlignment="center"
             android:visibility="invisible"
-            />
-    </LinearLayout>
+            app:layout_constraintBottom_toTopOf="@+id/spinner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        android:gravity="center_horizontal"
-        android:id="@+id/linearLayout4"
-        android:layout_below="@+id/linearLayout3">
 
         <TextView
             android:id="@+id/textbookcount"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:layout_marginBottom="20dp"
             android:fontFamily="@font/allerta"
-            android:text="Total of books: "
+            android:text="@string/total_of_books"
             android:textSize="18dp"
             android:textStyle="bold"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/btnStore"
+            app:layout_constraintEnd_toStartOf="@+id/spinner"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editText1" />
+
 
         <Spinner
             android:id="@+id/spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="11dp"
             android:dropDownWidth="match_parent"
             android:spinnerMode="dropdown"
-            android:visibility="invisible" />
+            android:visibility="invisible"
+            app:layout_constraintBottom_toTopOf="@+id/btnBuy"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/textbookcount"
+            app:layout_constraintTop_toBottomOf="@+id/editText1" />
 
-    </LinearLayout>
-
-
-
-
-    <LinearLayout
-       android:layout_width="match_parent"
-       android:layout_height="wrap_content"
-       android:orientation="horizontal"
-       android:gravity="center"
-       android:layout_marginTop="20dp"
-       android:id="@+id/linearLayout5"
-       android:layout_below="@+id/linearLayout4"
-    >
-
-
-       <Button
+        <Button
             android:id="@+id/btnStore"
-            android:layout_width="130dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-           android:background="@drawable/btn_rounded"
+            android:layout_marginStart="66dp"
+            android:layout_marginLeft="66dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="30dp"
+            android:background="@drawable/btn_rounded"
+            android:text="@string/add_new_book"
             android:textColor="#ffffffff"
-            android:text="add new book"/>
-
+            app:layout_constraintBottom_toTopOf="@+id/textPrice"
+            app:layout_constraintEnd_toStartOf="@+id/btnBuy"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spinner" />
 
 
         <Button
             android:id="@+id/btnBuy"
-            android:layout_width="130dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textColor="#ffffffff"
-            android:layout_marginLeft="20dp"
+            android:layout_marginEnd="65dp"
+            android:layout_marginRight="65dp"
             android:background="@drawable/btn_rounded"
-            android:text="buy now" />
-
-
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout6"
-        android:layout_marginTop="30dp"
-        android:paddingBottom="10dp"
-        android:gravity="center"
-        android:orientation="horizontal"
-        android:layout_below="@+id/linearLayout5">
+            android:text="@string/buy_now"
+            android:textColor="#ffffffff"
+            app:layout_constraintBaseline_toBaselineOf="@+id/btnStore"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/btnStore" />
 
 
         <TextView
             android:id="@+id/textPrice"
             android:layout_width="wrap_content"
-            android:layout_height="30dp"
-            android:layout_gravity="center"
+            android:layout_height="0dp"
+            android:layout_marginBottom="20dp"
             android:fontFamily="@font/allerta"
-            android:text="column"
-            android:textSize="18dp"
-            android:textStyle="bold" />
+            android:gravity="center"
+            android:text="@string/column"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/btnStore" />
 
-    </LinearLayout>
 
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-</RelativeLayout>
 
 

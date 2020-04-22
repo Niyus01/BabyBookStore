@@ -149,7 +149,6 @@ public class DataBaseHelperBooks extends SQLiteOpenHelper {
     public void deleteTable(){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM "+ "Books";
-        //db.rawQuery(query, null);
         db.execSQL(query);
     }
 

@@ -33,7 +33,6 @@ public class MainActivity extends AppCompatActivity {
     // Find the toolbar view inside the activity layout
     Toolbar toolbar =findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
-    getSupportActionBar().setDisplayShowTitleEnabled(false);
     toolbar_title = findViewById(R.id.toolbar_title);
     toolbar_title.setText("Baby Book Store");
 

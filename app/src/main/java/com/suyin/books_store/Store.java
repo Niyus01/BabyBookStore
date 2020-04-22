@@ -43,9 +43,6 @@ public class Store extends AppCompatActivity {
     }
 
 
-
-
-
     private Book[] books = {
             new Book("ABC an amazing alphabet book", "Dr.Seuss",7.80, R.drawable.book1,
                     "With Dr. Seuss as your guide, learning the alphabet is as easy as A, B, C."),

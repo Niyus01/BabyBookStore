@@ -1,8 +1,6 @@
 package com.suyin.books_store;
 
 public class Book {
-
-
     private final String title;
     private final String author;
     private final int imageResource;
