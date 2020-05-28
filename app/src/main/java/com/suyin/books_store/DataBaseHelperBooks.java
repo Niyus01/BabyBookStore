@@ -11,54 +11,24 @@ import androidx.annotation.Nullable;
 
 public class DataBaseHelperBooks extends SQLiteOpenHelper {
 
-    private static DataBaseHelperBooks sInstance;
-   // private final Context myContext;
-    private static SQLiteDatabase myWritableDb;
     private static final String TAG = "DatabaseHelper";
-    public static final String DataBase_Name = "Books.db";
+    public static final String DataBase_Name = "Books1.db";
     private static final String TABLE_NAME = "Books";
     private static final String COL1 = "ID";
     private static final String COL2 = "title";
     private static final String COL3 = "price";
     private static final String COL4 = "count";
+    private static final String COL5 ="payment";
 
     public DataBaseHelperBooks(@Nullable Context context) {
-        super(context, DataBase_Name, null, 2);
-      //  this.myContext = context;
+        super(context, DataBase_Name, null, 1);
+
     }
-
-    /*public static synchronized DataBaseHelperBooks getInstance(Context context) {
-
-        // Use the application context, which will ensure that you
-        // don't accidentally leak an Activity's context.
-        // Singleton pattern
-        if (sInstance == null) {
-            sInstance = new DataBaseHelperBooks(context.getApplicationContext());
-        }
-        return sInstance;
-    }
-
-    public SQLiteDatabase getMyWritableDatabase() {
-        if ((myWritableDb == null) || (!myWritableDb.isOpen())) {
-            myWritableDb = this.getWritableDatabase();
-        }
-
-        return myWritableDb;
-    }
-
-    @Override
-    public void close() {
-        super.close();
-        if (myWritableDb != null) {
-            myWritableDb.close();
-            myWritableDb = null;
-        }
-    }*/
 
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("CREATE TABLE Books (ID INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, price REAL, count REAL) ");
+        db.execSQL("CREATE TABLE Books (ID INTEGER PRIMARY KEY AUTOINCREMENT, title TEXT, price REAL, count REAL, payment REAL) ");
 
     }
 
@@ -69,6 +39,7 @@ public class DataBaseHelperBooks extends SQLiteOpenHelper {
 
     }
 
+
     public long addData(String title, double price, int count){
 
         SQLiteDatabase db = this.getWritableDatabase();
@@ -76,25 +47,34 @@ public class DataBaseHelperBooks extends SQLiteOpenHelper {
         ContentValues values = new ContentValues();
         if(cursor.getCount()==0){
 
-        values.put(COL2,title);
-        values.put(COL3, price);
-        values.put(COL4, count);
+            values.put(COL2,title);
+            values.put(COL3, price);
+            values.put(COL4, count);
+            values.put(COL5, price);
 
-        long result = db.insert("Books", null, values);
-        db.close();
+            long result = db.insert("Books", null, values);
+            db.close();
 
-        return result;}
+            return result;}
         else{
-           // cursor = db.rawQuery("SELECT count FROM Books WHERE title = ?", new String[] {title} );
             cursor.moveToFirst();
-            int a = cursor.getInt(cursor.getColumnIndex("count"));
-            a++;
-            values.put(COL4, a);
+            int countdb = cursor.getInt(cursor.getColumnIndex("count"));
+            countdb++;
+            double payment = countdb*price;
+            values.put(COL4, countdb);
+            values.put(COL5, payment);
 
             long result= db.update(TABLE_NAME, values,  COL2 + " = ?",new String[]{title});
             return  result;
+        }
     }
-}
+
+    public Cursor getCount(String title){
+
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor cursor = db.rawQuery("SELECT count FROM Books WHERE title = ?", new String[] {title} );
+        return cursor;
+    }
 
 
     public Cursor getData(){
@@ -104,30 +84,40 @@ public class DataBaseHelperBooks extends SQLiteOpenHelper {
         return data;
     }
 
+
     public Cursor getName() {
         SQLiteDatabase db = this.getReadableDatabase();
         String query = "SELECT " + COL1 + " FROM " + TABLE_NAME;
         Cursor data = db.rawQuery(query, null);
         return data;
     }
-    public Cursor getPrice(){
-        SQLiteDatabase db =this.getReadableDatabase();
-      //  String query =" SELECT SUM ("+COL3+") FROM " +TABLE_NAME ;
-        Cursor data = db.rawQuery("SELECT SUM (price) AS total FROM Books", null);
-        /*Cursor cursorprice = db.rawQuery("SELECT price FROM Books WHERE title = ?", new String[] {title});
-        double priceSave = cursorprice.getDouble(cursorprice.getColumnIndex("price"));
-        priceSave*=a;*/
-        return data;
 
+
+    public Cursor getPayment(){
+        SQLiteDatabase db =this.getReadableDatabase();
+        Cursor data = db.rawQuery("SELECT SUM (payment) AS total FROM Books", null);
+        return data;
     }
+
+
+    public Cursor getCount(){
+        SQLiteDatabase db = this.getReadableDatabase();
+        Cursor data = db.rawQuery("SELECT SUM (count) As totalItem FROM Books", null);
+        return data;
+    }
+
 
     public void updateCount(int count, String title){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        Cursor cursor = db.rawQuery("SELECT price FROM Books WHERE title = ?", new String[] {title} );
+        cursor.moveToFirst();
+        double price = cursor.getDouble(cursor.getColumnIndex("price"));
+        double payment=price * count;
         values.put(COL4,count);
-
+        values.put(COL5,payment);
         long result= db.update(TABLE_NAME, values,  COL2 + " = ?",new String[]{title});
-        //String query = "UPDATE " + TABLE_NAME + " SET " + COL4 + " = '" + count + "' WHERE title = ?", new String[] {title};
+
 
     }
 
@@ -143,9 +133,9 @@ public class DataBaseHelperBooks extends SQLiteOpenHelper {
         return data;
     }
 
+
     public void deleteName(int id, String name){
         SQLiteDatabase db = this.getWritableDatabase();
-
         String query = "DELETE FROM " + TABLE_NAME + " WHERE " + COL1 + " = '" + id + "'" +
                 " AND " + COL2 + " = '" + name + "'";
 
@@ -154,14 +144,13 @@ public class DataBaseHelperBooks extends SQLiteOpenHelper {
         db.execSQL(query);
 
     }
+
+
     public void deleteTable(){
         SQLiteDatabase db = this.getWritableDatabase();
         String query = "DELETE FROM "+ "Books";
         //db.rawQuery(query, null);
         db.execSQL(query);
     }
-
-
-
 
 }

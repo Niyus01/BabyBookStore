@@ -1,16 +1,25 @@
 <resources>
     <string name="app_name">Books_Store</string>
-    <string name="username">Username</string>
+    <string name="email"> Email</string>
     <string name="password">Password</string>
-    <string name="login">Login</string>
     <string name="prompt">Total of books</string>
     <string name="not_registered">not_registered</string>
-    <string name="register">Register</string>
     <string name="confirm_password">Confirm_Password</string>
+    <string name="register">Register</string>
+    <string name="click_a_book_if_you_want_to_remove_it_or_add_another_one">Click a book if you want to remove it or add another one.</string>
+    <string name="total_of_books">Total of books:</string>
+    <string name="add_new_book">add new book</string>
+    <string name="buy_now">buy now</string>
+    <string name="column">column</string>
+    <string name="shop_books">Shop Books</string>
+    <string name="view_cart">View Cart</string>
+    <string name="already_registered">Already registered?</string>
+    <string name="login">Login</string>
     <string-array name="numbers">
+        <item>Choose</item>
         <item>Delete</item>
-        <item>One</item>
-        <item>Two</item>
-        <item>Three</item>
+        <item>1 Book</item>
+        <item>2 Books</item>
+        <item>3 Books</item>
     </string-array>
 </resources>

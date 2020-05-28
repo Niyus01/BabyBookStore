@@ -36,7 +36,6 @@
         android:layout_height="wrap_content"
         android:textSize="14sp"
         android:textStyle="bold"
-
         android:gravity="center_horizontal"/>
 
     <TextView
@@ -45,7 +44,6 @@
         android:id="@+id/textview_price"
         android:textStyle="bold"
         android:textSize="14sp"
-
         android:gravity="center_horizontal"/>
 
 

@@ -5,10 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-
-    android:background="#35CE3B"
     android:gravity="center_horizontal"
     tools:context=".SelectBookActivity">
+
+    <include
+        android:id="@+id/include2"
+        layout="@layout/toolbar_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+</include>
 
 
     <TextView
@@ -18,12 +23,14 @@
         android:layout_marginTop="30dp"
         android:fontFamily="serif"
         android:drawSelectorOnTop="false"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:textAlignment="textStart"
+        android:gravity="fill_horizontal"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textAlignment="gravity"
+        android:textSize="24sp"
+        android:textStyle="bold"
         android:layout_gravity="start"
-        android:textSize="22dp"
-        android:textStyle="bold" />
+        />
 
     <TextView
         android:id="@+id/textBook"
@@ -33,10 +40,11 @@
         android:layout_marginTop="60dp"
         android:drawSelectorOnTop="false"
         android:fontFamily="serif"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-
-        android:textSize="20dp"
+        android:gravity="fill_horizontal"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        android:textAlignment="gravity"
+        android:textSize="20sp"
         android:textStyle="bold" />
 
 
@@ -44,7 +52,9 @@
         android:layout_width="150dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
-        android:text="Add to my car"
+        android:text="Add to cart"
+        android:background="@drawable/btn_rounded"
+        android:textColor="#ffffffff"
         android:layout_gravity="center_horizontal"
         android:enabled="true"
         android:saveEnabled="true"
@@ -58,7 +68,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_gravity="center_horizontal"
-        android:text="Check my car"
+        android:background="@drawable/btn_rounded"
+        android:textColor="#ffffffff"
+        android:text="View cart"
         android:paddingHorizontal="20dp"
         android:id="@+id/btnList"/>
 

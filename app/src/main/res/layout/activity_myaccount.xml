@@ -5,42 +5,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="#35CE3B"
     android:gravity="center_horizontal"
     tools:context=".myaccountActivity">
 
-    <TextView
-        android:id="@+id/title"
+
+    <include
+        android:id="@+id/include4"
+        layout="@layout/toolbar_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+    </include>
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="50dp"
-        android:fontFamily="sans-serif-black"
-        android:textAlignment="center"
-        android:textAllCaps="true"
-        android:textSize="30dp"
-        android:textStyle="italic" />
+        android:layout_marginTop="100dp"
+        android:orientation="vertical"
+        android:id="@+id/linearLayout3"
+        >
 
-    <Button
-        android:id="@+id/buttonStore"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="200dp"
-        android:text="Store of books" />
+        <Button
+            android:id="@+id/buttonStore"
+            android:layout_width="163dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_rounded"
+            android:text="Shop Books"
+            android:textColor="#ffffffff"
+            android:textSize="16sp"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+            android:layout_marginTop="200dp"
+           />
 
-    <Button
+        <Button
 
-        android:id="@+id/buttonView"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/buttonStore"
-        android:layout_gravity="center"
-        android:layout_centerHorizontal= "true"
+            android:id="@+id/buttonView"
+            android:layout_width="163dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_rounded"
+            android:text="View Cart"
+            android:textAlignment="center"
+            android:textColor="#ffffffff"
+            android:textSize="16sp"
+            android:layout_below="@+id/buttonStore"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center"
+ />
+    </LinearLayout>
 
-        android:text="Check my List"
-        android:textAlignment="center" />
+
 
 </RelativeLayout>
 

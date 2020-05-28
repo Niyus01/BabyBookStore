@@ -1,6 +1,8 @@
 package com.suyin.books_store;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,75 +11,94 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
-
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText text_username;
-    EditText text_password;
-    EditText text_confpassword;
-    Button button_Register;
-    TextView textview_Login;
-    DataBaseHelperLogin db;
-    FirebaseAuth firebase;
+  EditText text_useremail;
+  EditText text_password;
+  Button button_Register;
+  TextView textview_Login, toolbar_title;
+  DataBaseHelperLogin db;
+  FirebaseAuth firebase;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_register);
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_register);
 
-        db = new DataBaseHelperLogin(this);
-        text_username = findViewById(R.id.edittext_username);
-        text_password = findViewById(R.id.edittext_password);
-        text_confpassword = findViewById(R.id.edittext_conf_password);
-        button_Register= findViewById(R.id.button_register);
-        textview_Login =  findViewById(R.id.textview_login);
+    db = new DataBaseHelperLogin(this);
+    text_useremail = findViewById(R.id.edittext_useremail);
+    text_password = findViewById(R.id.edittext_password);
+    button_Register= findViewById(R.id.button_register);
+    textview_Login =  findViewById(R.id.textview_login);
+    firebase = FirebaseAuth.getInstance();
 
-        textview_Login.setOnClickListener(new View.OnClickListener() {
+
+    Toolbar toolbar =findViewById(R.id.toolbar);
+    setSupportActionBar(toolbar);
+    toolbar_title = findViewById(R.id.toolbar_title);
+    toolbar_title.setText("Baby Book Store");
+
+    textview_Login.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        Intent loginIntent = new Intent(RegisterActivity.this, MainActivity.class);
+        startActivity(loginIntent);
+      }
+    });
+
+
+    button_Register.setOnClickListener(new View.OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        String email = text_useremail.getText().toString().trim();
+        String pwd = text_password.getText().toString().trim();
+
+        if(email.isEmpty()){
+          text_useremail.setError("Please enter email id");
+          text_useremail.requestFocus();
+        }
+        else if (pwd.isEmpty()){
+          text_password.setError("Please enter your password");
+          text_password.requestFocus();
+        }
+        else if(pwd.length()<6){
+          text_password.setError("Password must be >=6 Characters");
+          text_password.requestFocus();
+
+        }
+        else if (email.isEmpty()&&pwd.isEmpty()){
+          text_password.setError("Field is empty");
+          text_password.requestFocus();
+          text_useremail.setError("Filed is empty");
+          text_useremail.requestFocus();
+        }
+        else if (!(email.isEmpty()&&pwd.isEmpty())){
+          firebase.createUserWithEmailAndPassword(email,pwd).addOnCompleteListener( new OnCompleteListener<AuthResult>() {
             @Override
-            public void onClick(View v) {
-                Intent loginIntent = new Intent(RegisterActivity.this, MainActivity.class);
-                startActivity(loginIntent);
+            public void onComplete(@NonNull Task<AuthResult> task) {
+              if(task.isSuccessful()){
+                Toast.makeText(RegisterActivity.this,"SignUp Successful, Please Login in", Toast.LENGTH_SHORT).show();
+                text_useremail.setText("");
+                text_password.setText("");
+
+              }
+              else
+                Toast.makeText(RegisterActivity.this,"SignUp Usuccessful, ", Toast.LENGTH_SHORT).show();
+
             }
-        });
+          });
+        }
+        else {
+          Toast.makeText(RegisterActivity.this,"Error Ocurred!", Toast.LENGTH_SHORT).show();
 
-        button_Register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String user = text_username.getText().toString().trim();
-                String pwd = text_password.getText().toString().trim();
-                String conf_pwd = text_confpassword.getText().toString().trim();
+        }
 
-                if(user.isEmpty()){
-                    text_username.setError("Please enter email id");
-
-                }
-                else if (pwd.isEmpty()){
-                    text_password.setError("Please enter your password");
-
-                }
-                else if (user.isEmpty()&&pwd.isEmpty()){
-                    Toast.makeText(RegisterActivity.this,"Field are Empty", Toast.LENGTH_SHORT).show();
-
-                }
-
-                else if (!(user.isEmpty()&&pwd.isEmpty())) {
-
-                    if (pwd.equals(conf_pwd)) {
-                        long val = db.addData(user, pwd);
-
-                        if (val > 0)
-                            Toast.makeText(RegisterActivity.this, "You have registered", Toast.LENGTH_SHORT).show();
-
-                        else
-                            Toast.makeText(RegisterActivity.this, pwd + "Registration error", Toast.LENGTH_SHORT).show();
-
-                    } else {
-                        Toast.makeText(RegisterActivity.this, "Password is not matching", Toast.LENGTH_SHORT).show();
-                    }
-                }
-            }
-        });
-    }
+      }
+    });
+  }
 }

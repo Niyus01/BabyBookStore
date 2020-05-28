@@ -1,39 +1,74 @@
 {
   "project_info": {
-    "project_number": "690931277484",
-    "firebase_url": "https://fir-38d97.firebaseio.com",
-    "project_id": "fir-38d97",
-    "storage_bucket": "fir-38d97.appspot.com"
+    "project_number": "459905369971",
+    "firebase_url": "https://booksstore-7c84a.firebaseio.com",
+    "project_id": "booksstore-7c84a",
+    "storage_bucket": "booksstore-7c84a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:690931277484:android:5356e0087325d98c",
+        "mobilesdk_app_id": "1:459905369971:android:430fcaf8a8970c1e392706",
         "android_client_info": {
           "package_name": "com.suyin.books_store"
         }
       },
       "oauth_client": [
         {
-          "client_id": "690931277484-6dm11q7dmlv7ujkeo022i64gtclpl7md.apps.googleusercontent.com",
+          "client_id": "459905369971-aj41ginr89m0lr78is6g8ei2pvkufts8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.suyin.books_store",
+            "certificate_hash": "3518ccefcb99ed058c4f10e74650a1d1debd18cf"
+          }
+        },
+        {
+          "client_id": "459905369971-8b2haqoquvbp7ubdqlihom02uu3cgj9l.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyA5fsevykyWAgtCTQSTqZxR4Qvb6iYqcAw"
+          "current_key": "AIzaSyD7unmLfNRNztOBOywSk2SBpVxxvJuYb2o"
         }
       ],
       "services": {
-        "analytics_service": {
-          "status": 1
-        },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
-        },
-        "ads_service": {
-          "status": 2
+          "other_platform_oauth_client": [
+            {
+              "client_id": "459905369971-8b2haqoquvbp7ubdqlihom02uu3cgj9l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:459905369971:android:15b79ac05df7ebe0392706",
+        "android_client_info": {
+          "package_name": "com.suyin.login"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "459905369971-8b2haqoquvbp7ubdqlihom02uu3cgj9l.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7unmLfNRNztOBOywSk2SBpVxxvJuYb2o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "459905369971-8b2haqoquvbp7ubdqlihom02uu3cgj9l.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }

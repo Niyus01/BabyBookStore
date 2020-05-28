@@ -1,19 +1,12 @@
 package com.suyin.books_store;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.os.Bundle;
-import android.database.Cursor;
-import android.os.Bundle;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -26,12 +19,17 @@ public class SelectBookActivity extends AppCompatActivity {
     private DataBaseHelperBooks db;
     private String title, infoBook ;
     private double price;
-    private int selectedID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_select_book);
+
+        Toolbar toolbar =findViewById(R.id.toolbar_main);
+        TextView toolbar_title = findViewById(R.id.toolbar_title);
+        TextView sing_up = findViewById(R.id.toolbar_text);
+        setSupportActionBar(toolbar);
+        toolbar_title.setText("About this book");
 
         btnList = findViewById(R.id.btnList);
         btnSave = findViewById(R.id.btnSave);
@@ -47,14 +45,22 @@ public class SelectBookActivity extends AppCompatActivity {
         booktoAdd.setText("Book name: "+title);
         textBook.setText("Information about this book: "+ infoBook);
 
+        sing_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SelectBookActivity.this, MainActivity.class));
+            }
+        });
+
         btnSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addData(title, price);
+                btnSave.setBackground(getResources().getDrawable(R.drawable.btn_click));
+                btnSave.setTextColor(getResources().getColor(R.color.colorPrimary));
+                btnSave.setText("Added to the cart");
                 btnSave.setEnabled(false);
-
             }
-
         });
 
         btnList.setOnClickListener(new View.OnClickListener() {
@@ -67,10 +73,10 @@ public class SelectBookActivity extends AppCompatActivity {
             }
         });
 
-
         }
+
     public void addData(String title, double price){
-      //  db.getWritableDatabase();
+
         long res =  db.addData(title, price,1);
 
         if(res>0){
